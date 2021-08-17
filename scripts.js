@@ -40,6 +40,8 @@ console.log(`You have chosen ${playerSelection.toLowerCase()} and the computer h
     else return "You lose!";
     }
 }
+
+//This check compares the results of playRound()
 if (playercount>computercount)
     {console.log("You won!")}
     else if (playercount == computercount)
