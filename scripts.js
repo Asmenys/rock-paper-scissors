@@ -29,6 +29,10 @@ buttonPaper.setAttribute("id", "Paper");
 buttonPaper.setAttribute("class", "gameButton");
 buttonPaper.textContent = "Paper";
 container.appendChild(buttonPaper);
+const result = document.createElement("p");
+const currentResults = document.createElement("div");
+currentResults.style = "Black";
+currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
 container.appendChild(currentResults);
 //CONTAINER-END
 
@@ -50,10 +54,6 @@ restartButton.addEventListener("click", function () {
   currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
   updateResults();
 });
-const result = document.createElement("p");
-const currentResults = document.createElement("div");
-currentResults.style = "Black";
-currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
 
 //invoked by updateResults(), depending on the argument displays appropriate message, removes the main game screen and displays the end screen.
 function gameResults() {
