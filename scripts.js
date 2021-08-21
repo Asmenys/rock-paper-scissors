@@ -38,7 +38,6 @@ const restartButton = document.createElement("button");
 restartButton.setAttribute("id", "restartButton");
 restartButton.textContent = "Start the game anew";
 
-
 //On click resets the score values, removes the end screen, adds the game screen back, updates score display.
 restartButton.addEventListener("click", function () {
   playercount = 0;
@@ -55,7 +54,6 @@ const result = document.createElement("p");
 const currentResults = document.createElement("div");
 currentResults.style = "Black";
 currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
-
 
 //invoked by updateResults(), depending on the argument displays appropriate message, removes the main game screen and displays the end screen.
 function gameResults() {
@@ -110,7 +108,6 @@ btn.forEach((button) => {
 });
 //INvoked by rpc buttons, compares the selections of the player and AI, then calls the appropriate function.
 function playRound(playerSelection, computerSelection) {
-
   //Draw condition
   if (playerSelection == computerSelection) {
     roundDraw();
