@@ -4,52 +4,116 @@ let computercount = 0;
 
 //Randomly selects a member of rpc array
 function computerPlay() {
-  return Math.floor(Math.random() * 3);
+  let computerSelection = rpc[Math.floor(Math.random() * 3)];
+  return computerSelection;
+}
+const body = document.querySelector("body");
+//Container-begin
+const container = document.createElement("div");
+body.appendChild(container);
+
+const buttonRock = document.createElement("button");
+buttonRock.setAttribute("id", "Rock", "class", "gameButton");
+buttonRock.setAttribute("class", "gameButton");
+buttonRock.textContent = "Rock";
+container.appendChild(buttonRock);
+
+const buttonScissors = document.createElement("button");
+buttonScissors.setAttribute("id", "Scissors", "class", "gameButton");
+buttonScissors.setAttribute("class", "gameButton");
+buttonScissors.textContent = "Scissors";
+container.appendChild(buttonScissors);
+
+const buttonPaper = document.createElement("button");
+buttonPaper.setAttribute("id", "Paper");
+buttonPaper.setAttribute("class", "gameButton");
+buttonPaper.textContent = "Paper";
+container.appendChild(buttonPaper);
+//CONTAINER-END
+
+//END SCREEN BEGIN
+const endScreen = document.createElement("div");
+const restartButton = document.createElement("button");
+restartButton.setAttribute("id", "restartButton");
+restartButton.textContent = "Start the game anew";
+restartButton.addEventListener("click", function () {
+  playercount = 0;
+  computercount = 0;
+  body.removeChild(endScreen);
+  body.appendChild(container);
+  container.removeChild(result);
+  const currentResults = document.createElement("div");
+  currentResults.style = "Black";
+  currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
+  updateResults();
+});
+const result = document.createElement("p");
+const currentResults = document.createElement("div");
+currentResults.style = "Black";
+currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
+
+function gameStatus() {
+  body.removeChild(container);
+  if (arguments[0] == "win") {
+    endScreen.textContent = `Congratulations, you have won the game with the score of ${playercount} to ${computercount}`;
+  } else if (arguments[0] == "lose") {
+    endScreen.textContent = `The computer has won the game with the score of ${computercount} to ${playercount}. Better luck next time!`;
+  }
+  body.appendChild(endScreen);
+  endScreen.appendChild(restartButton);
 }
 
-//This loop calls playRound() 5 times and then increments either playercount or computercount depending on the value returned by playRound().
-for (let i = 1; i <= 5; i++) {
-  playerSelection = window.prompt("Rock, paper or scissors?");
-  let results = playRound(playerSelection);
-
-  if (results == "You win!") {
-    console.log("You win!");
-    playercount++;
-  } else if (results == "You lose!") {
-    console.log("You lose!");
-    computercount++;
-  } else console.log("It's a DRAW!");
-
-  //This function takes an input and compares it to the output from computerPlay()
-  function playRound(playerSelection) {
-    let computerSelection = rpc[computerPlay()];
-    console.log(
-      `You have chosen ${playerSelection.toLowerCase()} and the computer has drawn ${computerSelection}!`
-    );
-    if (computerSelection.toLowerCase() == playerSelection.toLowerCase()) {
-      return "Its a DRAW";
-    } else if (
-      computerSelection == "Rock" &&
-      playerSelection.toLowerCase() == "paper"
-    ) {
-      return "You win!";
-    } else if (
-      computerSelection == "Paper" &&
-      playerSelection.toLowerCase() == "scissors"
-    ) {
-      return "You win!";
-    } else if (
-      computerSelection == "Scissors" &&
-      playerSelection.toLowerCase() == "rock"
-    ) {
-      return "You win!";
-    } else return "You lose!";
+function updateResults() {
+  currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
+  if (playercount >= 5) {
+    gameStatus("win");
+  } else if (computercount >= 5) {
+    gameStatus("lose");
   }
 }
 
-//This check compares the results of playRound()
-if (playercount > computercount) {
-  console.log("You won!");
-} else if (playercount == computercount) {
-  console.log("It's a DRAW!");
-} else console.log("You lose!");
+container.appendChild(currentResults);
+function roundWin() {
+  result.style.color = "Green";
+  result.textContent = "You win!";
+  container.appendChild(result);
+  playercount += 1;
+  updateResults();
+}
+function roundLose() {
+  result.style.color = "Red";
+  result.textContent = "You lost!";
+  container.appendChild(result);
+  computercount += 1;
+  updateResults();
+}
+function roundDraw() {
+  result.style.color = "Grey";
+  result.textContent = "It's a DRAW";
+  container.appendChild(result);
+}
+//querry for class .gameButton
+const btn = document.querySelectorAll(".gameButton");
+btn.forEach((button) => {
+  button.addEventListener("click", function (e) {
+    playRound(e.target.id, computerPlay());
+  });
+});
+//Round function
+function playRound(playerSelection, computerSelection) {
+  console.log(playerSelection, computerSelection);
+  //Draw condition
+  if (playerSelection == computerSelection) {
+    roundDraw();
+  }
+  //Win condition
+  else if (
+    (playerSelection == "Scissors" && computerSelection == "Paper") ||
+    (playerSelection == "Rock" && computerSelection == "Scissors") ||
+    (playerSelection == "Paper" && computerSelection == "Rock")
+  ) {
+    roundWin();
+  }
+  //Lose condition
+  else roundLose();
+}
