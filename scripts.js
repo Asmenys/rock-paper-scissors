@@ -29,6 +29,7 @@ buttonPaper.setAttribute("id", "Paper");
 buttonPaper.setAttribute("class", "gameButton");
 buttonPaper.textContent = "Paper";
 container.appendChild(buttonPaper);
+container.appendChild(currentResults);
 //CONTAINER-END
 
 //END SCREEN BEGIN
@@ -36,6 +37,9 @@ const endScreen = document.createElement("div");
 const restartButton = document.createElement("button");
 restartButton.setAttribute("id", "restartButton");
 restartButton.textContent = "Start the game anew";
+
+
+//On click resets the score values, removes the end screen, adds the game screen back, updates score display.
 restartButton.addEventListener("click", function () {
   playercount = 0;
   computercount = 0;
@@ -52,7 +56,9 @@ const currentResults = document.createElement("div");
 currentResults.style = "Black";
 currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
 
-function gameStatus() {
+
+//invoked by updateResults(), depending on the argument displays appropriate message, removes the main game screen and displays the end screen.
+function gameResults() {
   body.removeChild(container);
   if (arguments[0] == "win") {
     endScreen.textContent = `Congratulations, you have won the game with the score of ${playercount} to ${computercount}`;
@@ -62,17 +68,17 @@ function gameStatus() {
   body.appendChild(endScreen);
   endScreen.appendChild(restartButton);
 }
-
+//Updates game results, if either score reaches a value of 5 => invokes gameResults()
 function updateResults() {
   currentResults.textContent = `Current score is PLR ${playercount}:${computercount} BOT`;
   if (playercount >= 5) {
-    gameStatus("win");
+    gameResults("win");
   } else if (computercount >= 5) {
-    gameStatus("lose");
+    gameResults("lose");
   }
 }
 
-container.appendChild(currentResults);
+//If the computer has lost, displays appropriate messages and updates the score values.
 function roundWin() {
   result.style.color = "Green";
   result.textContent = "You win!";
@@ -80,6 +86,7 @@ function roundWin() {
   playercount += 1;
   updateResults();
 }
+//Same as roundWin() but if the computer has won.
 function roundLose() {
   result.style.color = "Red";
   result.textContent = "You lost!";
@@ -87,6 +94,7 @@ function roundLose() {
   computercount += 1;
   updateResults();
 }
+//Displays the appropriate message if the round turns out to a draw.
 function roundDraw() {
   result.style.color = "Grey";
   result.textContent = "It's a DRAW";
@@ -94,14 +102,15 @@ function roundDraw() {
 }
 //querry for class .gameButton
 const btn = document.querySelectorAll(".gameButton");
+//listener for the rock,paper,scissors buttons, invokes playRound with the id of the button that was clicked, also invokes computerPlay() as an argument to playRound()
 btn.forEach((button) => {
   button.addEventListener("click", function (e) {
     playRound(e.target.id, computerPlay());
   });
 });
-//Round function
+//INvoked by rpc buttons, compares the selections of the player and AI, then calls the appropriate function.
 function playRound(playerSelection, computerSelection) {
-  console.log(playerSelection, computerSelection);
+
   //Draw condition
   if (playerSelection == computerSelection) {
     roundDraw();
